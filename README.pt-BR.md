@@ -4,17 +4,14 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/5c3c8ad1b0b943f88efd/maintainability)](https://codeclimate.com/github/serradura/u-case/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5c3c8ad1b0b943f88efd/test_coverage)](https://codeclimate.com/github/serradura/u-case/test_coverage)
 
-<img src="https://raw.githubusercontent.com/serradura/u-case/main/assets/logo_1.jpg" height="150" alt="u-case">
-
-μ-case (Micro::Case) <!-- omit in toc -->
-====================
+<img src="./assets/ucase_logo_v1.png" height="200" alt="u-case">
 
 Crie simples e poderosos casos de uso como objetos Ruby.
 
 Principais objetivos deste projeto:
 1. Fácil de usar e aprender ( entrada **>>** processamento **>>** saída ).
 2. Promover imutabilidade (transformar dados ao invés de modificar) e integridade de dados.
-3. Nada de callbacks (ex: before, after, around) para evitar indireções quanto ao fluxo de execução da aplicação.
+3. Nada de callbacks (ex: before, after, around) para evitar indireções no código que possam comprometer o estado e entendimento dos fluxos da aplicação.
 4. Resolver regras de negócio complexas, ao permitir uma composição de casos de uso (criação de fluxos).
 5. Ser rápido e otimizado (verifique a [seção de benchmarks](#benchmarks)).
 
@@ -28,10 +25,10 @@ Versão    | Documentação
 2.6.0     | https://github.com/serradura/u-case/blob/v2.x/README.md
 1.1.0     | https://github.com/serradura/u-case/blob/v1.x/README.md
 
-## Table of Contents <!-- omit in toc -->
-- [Required Ruby version](#required-ruby-version)
-- [Dependencies](#dependencies)
-- [Installation](#installation)
+## Índice <!-- omit in toc -->
+- [Compatibilidade](#compatibilidade)
+- [Dependências](#dependências)
+- [Instalação](#instalação)
 - [Usage](#usage)
   - [`Micro::Case` - How to define a use case?](#microcase---how-to-define-a-use-case)
   - [`Micro::Case::Result` - What is a use case result?](#microcaseresult---what-is-a-use-case-result)
@@ -76,37 +73,43 @@ Versão    | Documentação
 - [License](#license)
 - [Code of Conduct](#code-of-conduct)
 
-## Required Ruby version
+## Compatibilidade
 
-> \>= 2.2.0
+| u-case         | branch  | ruby     |  activemodel  |
+| -------------- | ------- | -------- | ------------- |
+| 3.0.0.rc4      | main    | >= 2.2.0 | >= 3.2, < 6.1 |
+| 2.6.0          | v2.x    | >= 2.2.0 | >= 3.2, < 6.1 |
+| 1.1.0          | v1.x    | >= 2.2.0 | >= 3.2, < 6.1 |
 
-## Dependencies
+> Nota: O activemodel é uma dependência opcional, esse módulo que [pode ser habilitado]((#u-casewith_activemodel_validation---how-to-validate-use-case-attributes)) para validar os atributos dos casos de uso.
 
-1. [`kind`](https://github.com/serradura/kind) gem.
+## Dependências
 
-    A simple type system (at runtime) for Ruby.
+1. Gem [`kind`](https://github.com/serradura/kind).
 
-    Used to validate method inputs using its [`activemodel validation`](https://github.com/serradura/kind#kindvalidator-activemodelvalidations) module is auto required by [`u-case/with_activemodel_validation`](#u-casewith_activemodel_validation---how-to-validate-use-case-attributes) mode, and expose `Kind::Of::Micro::Case`, `Kind::Of::Micro::Case::Result` type checkers.
+    Sistema de tipos simples (em runtime) para Ruby.
+
+    É usado para validar os inputs de alguns métodos do u-case, além de expor um validador de tipos através do [`activemodel validation`](https://github.com/serradura/kind#kindvalidator-activemodelvalidations) ([veja como habilitar]((#u-casewith_activemodel_validation---how-to-validate-use-case-attributes))). Por fim, ele também expõe dois verificadores de tipo: [`Kind::Of::Micro::Case`, `Kind::Of::Micro::Case::Result`](https://github.com/serradura/kind#registering-new-custom-type-checker).
 2. [`u-attributes`](https://github.com/serradura/u-attributes) gem.
 
-    This gem allows defining read-only attributes, that is, your objects will have only getters to access their attributes data.
-    It is used to define the use case attributes.
+    Essa gem permite definir atributos de leitura (read-only), ou seja, os seus objetos só terão getters para acessar os dados dos seus atributos.
+    Ela é usada para definir os atributos dos casos de uso.
 
-## Installation
+## Instalação
 
-Add this line to your application's Gemfile:
+Adicione essa linha ao Gemfile da sua aplicação:
 
 ```ruby
-gem 'u-case'
+gem 'u-case', '~> 3.0.0.rc4'
 ```
 
-And then execute:
+E então execute:
 
     $ bundle
 
-Or install it yourself as:
+Ou instale manualmente:
 
-    $ gem install u-case
+    $ gem install u-case --pre
 
 ## Usage
 
